@@ -1,0 +1,273 @@
+/* Стили для страницы профиля */
+.profile-page {
+    padding: 30px 0;
+    margin-top: var(--header-height);
+}
+
+.profile-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    padding: 30px;
+    margin-bottom: 30px;
+}
+
+.profile-header {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--primary);
+}
+
+.user-info {
+    flex: 1;
+}
+
+.user-name {
+    font-size: 1.8rem;
+    margin-bottom: 5px;
+}
+
+.user-role {
+    display: inline-block;
+    padding: 3px 10px;
+    background: rgba(67, 97, 238, 0.1);
+    color: var(--primary);
+    border-radius: 20px;
+    font-size: 0.8rem;
+    margin-bottom: 10px;
+}
+
+.user-stats {
+    display: flex;
+    gap: 20px;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: var(--text-light);
+}
+
+.profile-actions {
+    display: flex;
+    gap: 15px;
+}
+
+.section-title {
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section-title i {
+    color: var(--primary);
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.info-item {
+    margin-bottom: 15px;
+}
+
+.info-label {
+    display: block;
+    color: var(--text-light);
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+.info-value {
+    padding: 8px 12px;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-sm);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .user-stats {
+        justify-content: center;
+    }
+
+    .profile-actions {
+        flex-direction: column;
+    }
+}
+
+/* Дополнительные стили для блока сборок */
+/* .builds-container {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+} */
+
+.build-card {
+    background-color: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 20px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+}
+
+.build-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.build-title {
+    font-size: 1.2rem;
+    color: var(--primary);
+    margin: 0;
+}
+
+.build-description {
+    color: var(--text-light);
+    margin-bottom: 15px;
+    font-size: 0.95rem;
+}
+
+.build-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.components-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.component-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.component-label {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    margin-bottom: 3px;
+}
+
+.component-value {
+    background-color: var(--bg-secondary);
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
+}
+
+/* Стили для блока ошибок */
+.errors-block {
+    background-color: #fff0f0;
+    border-left: 4px solid #ff6b6b;
+    padding: 15px;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    margin-top: 15px;
+}
+
+.error-title {
+    color: #ff6b6b;
+    font-weight: 600;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.error-item {
+    color: #ff6b6b;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.error-item:last-child {
+    margin-bottom: 0;
+}
+
+.error-icon {
+    flex-shrink: 0;
+}
+
+/* Стили для блока успешной проверки */
+.success-block {
+    background-color: #f0fff0;
+    border-left: 4px solid #51cf66;
+    padding: 15px;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    margin-top: 15px;
+}
+
+.success-title {
+    color: #51cf66;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.success-icon {
+    flex-shrink: 0;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .build-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .build-actions {
+        width: 100%;
+    }
+
+    .build-actions .btn {
+        flex: 1;
+        text-align: center;
+    }
+
+    .components-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .build-actions {
+        flex-direction: column;
+    }
+}

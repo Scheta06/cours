@@ -1,0 +1,209 @@
+/* Стили для формы создания сборки */
+.build-creator {
+    padding: 60px 0;
+    margin-top: var(--header-height);
+}
+
+.build-form {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: var(--card-bg);
+    padding: 30px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--text);
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background-color: var(--bg-secondary);
+    color: var(--text);
+    font-family: inherit;
+    transition: all 0.3s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.components-selection {
+    margin: 40px 0;
+}
+
+.components-selection h2 {
+    font-size: 1.5rem;
+    margin-bottom: 25px;
+    color: var(--text);
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.components-selection h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background-color: var(--primary);
+}
+
+.component-category {
+    background-color: var(--bg-secondary);
+    border-radius: var(--radius-sm);
+    padding: 15px 20px;
+    margin-bottom: 15px;
+    border: 1px solid var(--border);
+    transition: all 0.3s;
+}
+
+.component-category:hover {
+    border-color: var(--primary);
+}
+
+.category-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    gap: 12px;
+}
+
+.category-header i {
+    font-size: 1.2rem;
+    color: var(--primary);
+}
+
+.category-header h3 {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-right: auto;
+}
+
+.status {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    font-style: italic;
+}
+
+.select-component {
+    width: 100%;
+}
+
+.form-actions {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.btn-lg {
+    padding: 12px 30px;
+    font-size: 1.1rem;
+}
+
+.pd40 {
+    padding: 12px 15px 12px 40px;
+}
+
+.full-height {
+    height: 100%;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.compatibility-errors {
+    background-color: var(--bg-secondary);
+    border-radius: var(--radius-sm);
+    padding: 20px;
+    margin: 30px 0;
+    border: 1px solid var(--border);
+}
+
+.compatibility-errors h3 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.errors-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.error-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    color: #e53935;
+    padding: 8px 12px;
+    background-color: rgba(229, 57, 53, 0.1);
+    border-radius: var(--radius-sm);
+    line-height: 1.5;
+}
+
+.error-item i {
+    margin-top: 3px;
+    flex-shrink: 0;
+}
+
+.error-item.warning {
+    color: #ff9800;
+    background-color: rgba(255, 152, 0, 0.1);
+}
+
+.no-errors {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #4caf50;
+    padding: 8px 12px;
+    background-color: rgba(76, 175, 80, 0.1);
+    border-radius: var(--radius-sm);
+}
+
+/* Адаптивность формы */
+@media (max-width: 768px) {
+    .build-form {
+        padding: 20px;
+    }
+
+    .component-category {
+        padding: 15px;
+    }
+
+    .compatibility-errors {
+        padding: 15px;
+    }
+
+    .error-item, .no-errors {
+        font-size: 0.9rem;
+    }
+}
