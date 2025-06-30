@@ -2,11 +2,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Chassis;
+use App\Models\Chipset;
 use App\Models\Cooler;
 use App\Models\Motherboard;
 use App\Models\Processor;
 use App\Models\Psu;
 use App\Models\Rams;
+use App\Models\Socket;
 use App\Models\Storage;
 use App\Models\Vendor;
 use App\Models\Videocard;
@@ -94,12 +96,15 @@ class CatalogController extends Controller
     public function show($componentTitle, $componentId)
     {
         $data = null;
+        $motherboardSocket = null;
         switch ($componentTitle) {
             case 'processors':
                 $data = Processor::findOrFail($componentId)->load(['vendor', 'socket']);
                 break;
             case 'motherboards':
-                $data = Motherboard::findOrFail($componentId)->load(['vendor', 'socket', 'chipset', 'memoryType', 'form']);
+                $data = Motherboard::findOrFail($componentId)->load(['vendor', 'chipset', 'memoryType', 'form']);
+                $chipsetInfo = Chipset::find($data->chipset_id);
+                $motherboardSocket = Socket::find($chipsetInfo->socket_id);
                 break;
             case 'coolers':
                 $data = Cooler::findOrFail($componentId)->load(['vendor']);
@@ -123,6 +128,7 @@ class CatalogController extends Controller
         return view('pages.components.' . $componentTitle . '.show', [
             'data' => $data,
             'componentTitle' => $componentTitle,
+            'motherboardSocket' => $motherboardSocket,
         ]);
     }
 

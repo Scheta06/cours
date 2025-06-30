@@ -65,6 +65,10 @@
                         <span class="spec-value">{{ $data->chipset->title }}</span>
                     </div>
                     <div class="spec-row">
+                        <span class="spec-name">Чипсет</span>
+                        <span class="spec-value">{{ $motherboardSocket->title }}</span>
+                    </div>
+                    <div class="spec-row">
                         <span class="spec-name">Подзаголовок</span>
                         <span class="spec-value">{{ $data->title }}</span>
                     </div>

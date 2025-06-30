@@ -57,6 +57,12 @@
                             </div>
 
                             <div class="form-group">
+                                <label for="cpu-cores">Тактовая частота (МГц)*</label>
+                                <input type="number" name="frequency" id="cpu-cores" min="666" value="{{ old('frequency') }}"
+                                    placeholder="666" required>
+                            </div>
+
+                            <div class="form-group">
                                 <label for="cpu-cores">Производитель*</label>
                                 <select name="vendor_id" id="">
                                     <option value="">Выберите производителя</option>
@@ -81,7 +87,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="cpu-cores">Вместимость памяти (ГБ)*</label>
+                                <label for="cpu-cores">Вместимость одного модуля памяти (ГБ)*</label>
                                 <select name="memory_capacity_id" id="">
                                     <option value="">Выберите вместимость памяти</option>
                                     @foreach ($data[0]['memoryCapacity'] as $item)

@@ -11,28 +11,34 @@ class Rams extends Model
         'description',
         'vendor_id',
         'count_of_modules',
+        'frequency',
         'category_id',
         'memory_capacity_id',
         'memory_type_id',
     ];
 
-    public function configuration() {
+    public function configuration()
+    {
         return $this->hasMany(Configuration::class, 'ram_id');
     }
 
-    public function vendor() {
+    public function vendor()
+    {
         return $this->belongsTo(Vendor::class);
     }
 
-    public function memoryCapacity() {
+    public function memoryCapacity()
+    {
         return $this->belongsTo(MemoryCapacity::class);
     }
 
-    public function memoryType() {
+    public function memoryType()
+    {
         return $this->belongsTo(MemoryType::class);
     }
 
-    public function category() {
+    public function category()
+    {
         return $this->belongsTo(Category::class);
     }
 }

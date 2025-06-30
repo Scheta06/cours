@@ -68,6 +68,10 @@
                         <span class="spec-value">{{ $data->memoryCapacity->title }}</span>
                     </div>
                     <div class="spec-row">
+                        <span class="spec-name">Тактовая частота (МГц)</span>
+                        <span class="spec-value">{{ $data->frequency}}</span>
+                    </div>
+                    <div class="spec-row">
                         <span class="spec-name">Количество модулей</span>
                         <span class="spec-value">{{ $data->count_of_modules }}</span>
                     </div>

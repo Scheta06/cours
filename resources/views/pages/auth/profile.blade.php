@@ -65,7 +65,7 @@
                     <div class="empty-state">
                         <i class="fas fa-tools"></i>
                         <p>У вас пока нет сборок</p>
-                        <a href="{{ route('index') }}" class="btn btn-primary">Создать сборку</a>
+                        <a href="{{ route('index') }}" class="btn btn-primary" style="margin-top:5px;">Создать сборку</a>
                     </div>
                 @else
                     @foreach ($userConfigurations as $key => $value)
@@ -130,7 +130,9 @@
                                             {{ $value->chassis->title }}</span>
                                     </div>
                                 </div>
-                                @include('partials.configuration-errors', $configurationErrors = $value->errors)
+                                @include(
+                                    'partials.configuration-errors',
+                                    $configurationErrors = $value->errors)
                             </div>
                         </div>
                     @endforeach

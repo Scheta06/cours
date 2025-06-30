@@ -70,7 +70,7 @@
                             <div class="form-group">
                                 <label for="cpu-cores">Форм-фактор*</label>
                                 <select name="form_id" id="">
-                                    <option value="">Выберите производителя</option>
+                                    <option value="">Выберите форм-фактор</option>
                                     @foreach ($data[0]['form'] as $item)
                                         <option value="{{ $item->id }}"
                                             {{ old('form_id') == $item->id ? 'selected' : '' }}>{{ $item->title }}

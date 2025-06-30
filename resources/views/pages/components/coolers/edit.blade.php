@@ -20,7 +20,7 @@
                 <i class="fas fa-microchip"></i> Редактирование данных для кулеры
                 {{ $data['componentInfo']->vendor->title }} {{ $data['componentInfo']->title }}
             </h1>
-
+            @include('partials.update-component-errors')
             <div class="admin-form-container">
                 <form class="product-form"
                     action="{{ route('updateItemForm', ['componentTitle' => $componentTitle, 'componentId' => $data['componentInfo']->id]) }}"

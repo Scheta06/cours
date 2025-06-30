@@ -12,9 +12,10 @@ return new class extends Migration {
     {
         Schema::create('rams', function (Blueprint $table) {
             $table->id();
-            $table->string('title')->unique();
+            $table->string('title');
             $table->text('description')->nullable();
             $table->integer('count_of_modules');
+            $table->integer('frequency');
 
             $table
                 ->foreignId('vendor_id')

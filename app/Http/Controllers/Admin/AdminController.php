@@ -20,7 +20,6 @@ use App\Models\User;
 use App\Models\Vendor;
 use App\Models\Videocard;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
@@ -107,16 +106,21 @@ class AdminController extends Controller
         $searchTerm = $request->input('search');
         $selectedCategory = $request->input('category');
         $category = Category::all();
-        // Общая функция для фильтрации
+
         $filterItems = function ($query) use ($searchTerm, $selectedCategory) {
             if ($searchTerm) {
-                $query->where('title', 'like', '%' . $searchTerm . '%')->orWhere('title', 'like', '%' . $searchTerm . '%', 'in', 'vendors');
+                $query->where(function ($q) use ($searchTerm) {
+                    $q->where('title', 'like', '%' . $searchTerm . '%')
+                        ->orWhereHas('vendor', function ($vendorQuery) use ($searchTerm) {
+                            $vendorQuery->where('title', 'like', '%' . $searchTerm . '%');
+                        });
+                });
             }
+
             if ($selectedCategory) {
                 $query->where('category_id', $selectedCategory);
             }
         };
-        // dd($request->input('search'));
 
         $data = [
             'processors' => Processor::with(['category'])->where($filterItems)->get(),
@@ -291,26 +295,28 @@ class AdminController extends Controller
                     'read_speed' => 'Поле `Скорость чтения` обязательно к заполнению и должно быть числом',
                     'record_speed' => 'Поле `Скорость записи` обязательно к заполнению и должно быть числом',
                     'vendor_id' => 'Поле `Производитель` обязательно к заполнению',
-                    'memory_capacity_id' => 'Поле `Вместимость памяти` обязательно к заполнению и должно быть числом',
+                    'memory_capacity_id' => 'Поле `Вместимость памяти` обязательно к заполнению',
                 ]);
                 Storage::create($data);
                 break;
             case 'rams':
                 $data = $request->validate([
-                    'title' => 'required|string|unique:rams,title',
+                    'title' => 'required|string',
                     'description' => 'string',
                     'count_of_modules' => 'integer|required',
+                    'frequency' => 'integer|required',
                     'vendor_id' => 'integer|required',
                     'memory_capacity_id' => 'integer|required',
                     'memory_type_id' => 'integer|required',
                     'category_id' => 'integer|required',
                 ], [
-                    'title' => 'Поле `Название` обязательно к заполнению, должно быть уникальным и быть строкой',
+                    'title' => 'Поле `Название` обязательно к заполнению и должно быть строкой',
                     'description' => 'Поле `Описание` должно быть строкой',
                     'count_of_modules' => 'Поле `Количество модулей` обязательно к заполнению и должно быть числом',
                     'vendor_id' => 'Поле `Производитель` обязательно к заполнению',
-                    'memory_capacity_id' => 'Поле `Вместимость памяти` обязательно к заполнению и должно быть числом',
-                    'memory_type_id' => 'Поле `Тип памяти` обязательно к заполнению и должно быть числом',
+                    'frequency' => 'Поле `Количество модулей` обязательно к заполнению',
+                    'memory_capacity_id' => 'Поле `Вместимость памяти` обязательно к заполнению',
+                    'memory_type_id' => 'Поле `Тип памяти` обязательно к заполнению',
                 ]);
                 Rams::create($data);
                 break;
@@ -330,8 +336,8 @@ class AdminController extends Controller
                     'max_frequency' => 'Поле `Максимальная частота` обязательно к заполнению и должно быть числом',
                     'tdp' => 'Поле `Тепловыделение` обязательно к заполнению и должно быть числом',
                     'vendor_id' => 'Поле `Производитель` обязательно к заполнению',
-                    'memory_capacity_id' => 'Поле `Вместимость памяти` обязательно к заполнению и должно быть числом',
-                    'memory_type_id' => 'Поле `Тип памяти` обязательно к заполнению и должно быть числом',
+                    'memory_capacity_id' => 'Поле `Вместимость памяти` обязательно к заполнению',
+                    'memory_type_id' => 'Поле `Тип памяти` обязательно к заполнению',
                 ]);
                 Videocard::create($data);
                 break;
@@ -375,7 +381,8 @@ class AdminController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show() {}
+    public function show()
+    {}
 
     /**
      * Show the form for editing the specified resource.
@@ -476,43 +483,163 @@ class AdminController extends Controller
         switch ($componentTitle) {
             case 'processors':
                 $component = Processor::findOrFail($componentId);
-                $validated = $request->all();
-                $component->update($validated);
+                $data = $request->validate([
+                    'title' => 'required|string',
+                    'description' => 'string',
+                    'count_of_cores' => 'integer|required',
+                    'count_of_streams' => 'integer|required',
+                    'base_frequency' => 'decimal:1,3|required',
+                    'max_frequency' => 'decimal:1,3|required',
+                    'tdp' => 'required',
+                    'vendor_id' => 'required',
+                    'socket_id' => 'required',
+                    'category_id' => 'required',
+                ], [
+                    'title' => 'Поле `Название` обязательно к заполнению и должно быть строкой',
+                    'vendor_id' => 'Поле `Производитель` обязательно к заполнению',
+                    'socket_id' => 'Поле `Сокет` обязательно к заполнению',
+                    'description' => 'Поле `Описание` должно быть строкой',
+                    'count_of_cores' => 'Поле `Количество ядер` обязательно к заполнению и должно быть целым числом',
+                    'count_of_streams' => 'Поле `Количество потоков` обязательно к заполнению и должно быть целым числом',
+                    'base_frequency' => 'Поле `Базовая частота` обязательно к заполнению и должно быть числом с плавающей точкой до 3 знаков после запятой',
+                    'max_frequency' => 'Поле `Максимальная частота` обязательно к заполнению и должно быть числом с плавающей точкой до 3 знаков после запятой',
+                    'tdp' => 'Поле `Тепловыделение` обязательно к заполнению и должно быть целым числом',
+                ]);
+                $component->update($data);
                 break;
             case 'motherboards':
                 $component = Motherboard::findOrFail($componentId);
-                $validated = $request->all();
-                $component->update($validated);
+                $data = $request->validate([
+                    'title' => 'required|string',
+                    'description' => 'string',
+                    'vendor_id' => 'integer|required',
+                    'form_id' => 'integer|required',
+                    'memory_type_id' => 'integer|required',
+                    'chipset_id' => 'integer|required',
+                    'category_id' => 'integer|required',
+                ], [
+                    'title' => 'Поле `Название` обязательно к заполнению и должно быть строкой',
+                    'description' => 'Поле `Описание` должно быть строкой',
+                    'vendor_id' => 'Поле `Производитель` обязательно к заполнению',
+                    'form_id' => 'Поле `Чипсет` обязательно к заполнению',
+                    'memory_type_id' => 'Поле `Форм-фактор` обязательно к заполнению',
+                    'chipset_id' => 'Поле `Тип памяти` обязательно к заполнению',
+                ]);
+                $component->update($data);
                 break;
             case 'coolers':
                 $component = Cooler::findOrFail($componentId);
-                $validated = $request->all();
-                $component->update($validated);
+                $data = $request->validate([
+                    'title' => 'required|string',
+                    'description' => 'string',
+                    'power' => 'integer|required',
+                    'vendor_id' => 'integer|required',
+                    'category_id' => 'integer|required',
+                ], [
+                    'title' => 'Поле `Название` обязательно к заполнению и должно быть строкой',
+                    'description' => 'Поле `Описание` должно быть строкой',
+                    'power' => 'Поле `Мощность` обязательно к заполнению и должно быть числом',
+                    'vendor_id' => 'Поле `Производитель` обязательно к заполнению',
+                ]);
+                $component->update($data);
                 break;
             case 'storages':
                 $component = Storage::findOrFail($componentId);
-                $validated = $request->all();
-                $component->update($validated);
+                $data = $request->validate([
+                    'title' => 'required|string',
+                    'description' => 'string',
+                    'read_speed' => 'integer|required',
+                    'record_speed' => 'integer|required',
+                    'vendor_id' => 'integer|required',
+                    'memory_capacity_id' => 'integer|required',
+                    'category_id' => 'integer|required',
+                ], [
+                    'title' => 'Поле `Название` обязательно к заполнению и должно быть строкой',
+                    'description' => 'Поле `Описание` должно быть строкой',
+                    'read_speed' => 'Поле `Скорость чтения` обязательно к заполнению и должно быть числом',
+                    'record_speed' => 'Поле `Скорость записи` обязательно к заполнению и должно быть числом',
+                    'vendor_id' => 'Поле `Производитель` обязательно к заполнению',
+                    'memory_capacity_id' => 'Поле `Вместимость памяти` обязательно к заполнению',
+                ]);
+                $component->update($data);
                 break;
             case 'rams':
                 $component = Rams::findOrFail($componentId);
-                $validated = $request->all();
-                $component->update($validated);
+                $data = $request->validate([
+                    'title' => 'required|string',
+                    'description' => 'string',
+                    'count_of_modules' => 'integer|required',
+                    'frequency' => 'integer|required',
+                    'vendor_id' => 'integer|required',
+                    'memory_capacity_id' => 'integer|required',
+                    'memory_type_id' => 'integer|required',
+                    'category_id' => 'integer|required',
+                ], [
+                    'title' => 'Поле `Название` обязательно к заполнению и должно быть строкой',
+                    'description' => 'Поле `Описание` должно быть строкой',
+                    'count_of_modules' => 'Поле `Количество модулей` обязательно к заполнению и должно быть числом',
+                    'vendor_id' => 'Поле `Производитель` обязательно к заполнению',
+                    'frequency' => 'Поле `Количество модулей` обязательно к заполнению',
+                    'memory_capacity_id' => 'Поле `Вместимость памяти` обязательно к заполнению',
+                    'memory_type_id' => 'Поле `Тип памяти` обязательно к заполнению',
+                ]);
+                $component->update($data);
                 break;
             case 'videocards':
                 $component = Videocard::findOrFail($componentId);
-                $validated = $request->all();
-                $component->update($validated);
+                $data = $request->validate([
+                    'title' => 'required|string',
+                    'description' => 'string',
+                    'max_frequency' => 'integer|required',
+                    'tdp' => 'integer|required',
+                    'vendor_id' => 'integer|required',
+                    'memory_capacity_id' => 'integer|required',
+                    'memory_type_id' => 'integer|required',
+                    'category_id' => 'integer|required',
+                ], [
+                    'title' => 'Поле `Название` обязательно к заполнению, должно быть уникальным и быть строкой',
+                    'description' => 'Поле `Описание` должно быть строкой',
+                    'max_frequency' => 'Поле `Максимальная частота` обязательно к заполнению и должно быть числом',
+                    'tdp' => 'Поле `Тепловыделение` обязательно к заполнению и должно быть числом',
+                    'vendor_id' => 'Поле `Производитель` обязательно к заполнению',
+                    'memory_capacity_id' => 'Поле `Вместимость памяти` обязательно к заполнению',
+                    'memory_type_id' => 'Поле `Тип памяти` обязательно к заполнению',
+                ]);
+                $component->update($data);
                 break;
             case 'psus':
                 $component = Psu::findOrFail($componentId);
-                $validated = $request->all();
-                $component->update($validated);
+                $data = $request->validate([
+                    'title' => 'required|string',
+                    'description' => 'string',
+                    'power' => 'integer|required',
+                    'vendor_id' => 'integer|required',
+                    'form_id' => 'integer|required',
+                    'category_id' => 'integer|required',
+                ], [
+                    'title' => 'Поле `Название` обязательно к заполнению и должно быть строкой',
+                    'description' => 'Поле `Описание` должно быть строкой',
+                    'power' => 'Поле `Мощность` обязательно к заполнению и должно быть числом',
+                    'vendor_id' => 'Поле `Производитель` обязательно к заполнению',
+                    'form_id' => 'Поле `Форм-фактор` обязательно к заполнению',
+                ]);
+                $component->update($data);
                 break;
             case 'chassis':
                 $component = Chassis::findOrFail($componentId);
-                $validated = $request->all();
-                $component->update($validated);
+                $data = $request->validate([
+                    'title' => 'required|string',
+                    'description' => 'string',
+                    'vendor_id' => 'integer|required',
+                    'form_id' => 'integer|required',
+                    'category_id' => 'integer|required',
+                ], [
+                    'title' => 'Поле `Название` обязательно к заполнению и должно быть строкой',
+                    'description' => 'Поле `Описание` должно быть строкой',
+                    'vendor_id' => 'Поле `Производитель` обязательно к заполнению',
+                    'form_id' => 'Поле `Форм-фактор` обязательно к заполнению',
+                ]);
+                $component->update($data);
                 break;
         }
 

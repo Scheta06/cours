@@ -35,7 +35,7 @@
                                         <div class="product-specs">
                                             <div class="spec-item">
                                                 <i class="fas fa-microchip"></i>
-                                                <span>Мощность - {{ $item->power }}</span>
+                                                <span>Мощность - {{ $item->power }} Вт</span>
                                             </div>
                                         </div>
 

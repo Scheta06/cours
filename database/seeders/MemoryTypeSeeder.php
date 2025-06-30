@@ -25,6 +25,9 @@ class MemoryTypeSeeder extends Seeder
                 'title' => 'GDDR6X',
             ],
             [
+                'title' => 'GDDR7',
+            ],
+            [
                 'title' => 'GDDR7X',
             ],
         ];

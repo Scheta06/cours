@@ -56,6 +56,22 @@ class VendorSeeder extends Seeder
                 'title' => 'PCCooler',
                 'type' => '',
             ],
+            [
+                'title' => 'Kingston',
+                'type' => '',
+            ],
+            [
+                'title' => 'Deepcool',
+                'type' => '',
+            ],
+            [
+                'title' => 'Samsung',
+                'type' => '',
+            ],
+            [
+                'title' => 'Palit',
+                'type' => '',
+            ],
         ];
 
         foreach ($Array as $item) {

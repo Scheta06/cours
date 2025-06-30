@@ -20,7 +20,7 @@
                 <i class="fas fa-microchip"></i> Редактирование данных для кулеры
                 {{ $data['componentInfo']->vendor->title }} {{ $data['componentInfo']->title }}
             </h1>
-
+            @include('partials.update-component-errors')
             <div class="admin-form-container">
                 <form class="product-form"
                     action="{{ route('updateItemForm', ['componentTitle' => $componentTitle, 'componentId' => $data['componentInfo']->id]) }}"
@@ -65,6 +65,18 @@
                                     @foreach ($data['relations']['vendor'] as $item)
                                         <option value="{{ $item->id }}"
                                             {{ old('vendor_id', $data['componentInfo']->vendor_id) === $item->id ? 'selected' : '' }}>
+                                            {{ $item->title }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="cpu-cores">Форм-фактор*</label>
+                                <select name="form_id" id="">
+                                    <option value="">Выберите форм-фактор</option>
+                                    @foreach ($data['relations']['form'] as $item)
+                                        <option value="{{ $item->id }}"
+                                            {{ old('form_id', $data['componentInfo']->form_id) === $item->id ? 'selected' : '' }}>
                                             {{ $item->title }}</option>
                                     @endforeach
                                 </select>

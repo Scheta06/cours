@@ -20,7 +20,7 @@
                 <i class="fas fa-microchip"></i> Редактирование данных для накопителя
                 {{ $data['componentInfo']->vendor->title }} {{ $data['componentInfo']->title }}
             </h1>
-
+            @include('partials.update-component-errors')
             <div class="admin-form-container">
                 <form class="product-form"
                     action="{{ route('updateItemForm', ['componentTitle' => $componentTitle, 'componentId' => $data['componentInfo']->id]) }}"
@@ -54,14 +54,15 @@
                         <div class="form-grid">
                             <div class="form-group">
                                 <label for="cpu-cores">Скорость чтения (МБ/сек)*</label>
-                                <input type="number" name="read_speed" value="{{ $data['componentInfo']->read_speed }}" id="cpu-cores" min="1" max="1000000"
-                                    placeholder="500" required>
+                                <input type="number" name="read_speed" value="{{ $data['componentInfo']->read_speed }}"
+                                    id="cpu-cores" min="1" max="1000000" placeholder="500" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="cpu-cores">Скорость записи (МБ/сек)*</label>
-                                <input type="number" name="record_speed" value="{{ $data['componentInfo']->record_speed }}" id="cpu-cores" min="1" max="1000000"
-                                    placeholder="600" required>
+                                <input type="number" name="record_speed"
+                                    value="{{ $data['componentInfo']->record_speed }}" id="cpu-cores" min="1"
+                                    max="1000000" placeholder="600" required>
                             </div>
 
                             <div class="form-group">
@@ -71,6 +72,18 @@
                                     @foreach ($data['relations']['vendor'] as $item)
                                         <option value="{{ $item->id }}"
                                             {{ old('vendor_id', $data['componentInfo']->vendor_id) === $item->id ? 'selected' : '' }}>
+                                            {{ $item->title }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="cpu-cores">Вместимость памяти*</label>
+                                <select name="memory_capacity_id" id="">
+                                    <option value="">Выберите вместимость памяти</option>
+                                    @foreach ($data['relations']['memoryCapacity'] as $item)
+                                        <option value="{{ $item->id }}"
+                                            {{ old('memory_capacity_id', $data['componentInfo']->vendor_id) === $item->id ? 'selected' : '' }}>
                                             {{ $item->title }}</option>
                                     @endforeach
                                 </select>
