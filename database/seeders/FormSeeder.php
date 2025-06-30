@@ -42,7 +42,7 @@ class FormSeeder extends Seeder
                 'type' => $psu,
             ],
             [
-                'title' => 'Full-tower',
+                'title' => 'Full-tower', // 7
                 'type' => $case,
             ],
             [

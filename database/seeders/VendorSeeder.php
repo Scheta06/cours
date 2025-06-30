@@ -61,7 +61,7 @@ class VendorSeeder extends Seeder
                 'type' => '',
             ],
             [
-                'title' => 'Deepcool',
+                'title' => 'Deepcool', // 13
                 'type' => '',
             ],
             [
@@ -70,6 +70,14 @@ class VendorSeeder extends Seeder
             ],
             [
                 'title' => 'Palit',
+                'type' => '',
+            ],
+            [
+                'title' => 'Zalman',
+                'type' => '',
+            ],
+            [
+                'title' => 'Ardor Gaming',
                 'type' => '',
             ],
         ];
