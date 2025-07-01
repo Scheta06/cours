@@ -37,7 +37,7 @@ class LoginController extends Controller
             return redirect()->intended(route('index'));
         }
 
-        return back()->with('erros', 'Неверные учетные данные');
+        return back()->with('errors', 'Неверные учетные данные');
     }
 
     /**

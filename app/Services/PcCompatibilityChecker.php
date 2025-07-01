@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Models\Socket;
 use App\Models\Chipset;
+use App\Models\Socket;
 
 class PcCompatibilityChecker
 {
@@ -30,9 +30,10 @@ class PcCompatibilityChecker
         $motherboard = $components['motherboard'];
         $motherboardChipset = Chipset::find($motherboard->chipset_id);
         $motherboardSocket = Socket::find($motherboardChipset->socket_id);
+
         if ($processor &&
-                $motherboard &&
-                $processor->socket->id !== $motherboard->chipset->socket_id) {
+            $motherboard &&
+            $processor->socket->id !== $motherboard->chipset->socket_id) {
             $errors['processor_and_motherboard'] = sprintf(
                 'Процессор %s %s не совместим с материнской платой %s %s %s (разные сокеты - %s и %s)',
                 $processor->vendor->title,
@@ -56,7 +57,7 @@ class PcCompatibilityChecker
         $processor = $components['processor'];
         $cooler = $components['cooler'];
 
-        if ($processor && $cooler && $processor->tdp*1.4 > $cooler->power) {
+        if ($processor && $cooler && $processor->tdp * 1.4 > $cooler->power) {
             $errors['processor_and_cooler'] = sprintf(
                 'Процессор %s %s не совместим с кулером %s %s (ТДП: %dW > %dW)',
                 $processor->vendor->title,
