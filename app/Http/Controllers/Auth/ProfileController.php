@@ -38,7 +38,7 @@ class ProfileController extends Controller
                 'storage' => $config->storage,
                 'videocard' => $config->videocard,
                 'psu' => $config->psu,
-                'chassis' => $config->chassis
+                'chassis' => $config->chassis,
             ];
 
             $config['errors'] = $checker->check($components);

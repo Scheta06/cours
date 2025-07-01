@@ -60,9 +60,9 @@
                                 </div>
                             @endforeach
                         </div>
-                    </div>
-                    <div class="pagination-wrapper">
-                        {{ $data->links('partials.pagination') }}
+                        <div class="pagination-wrapper">
+                            {{ $data->links('partials.pagination') }}
+                        </div>
                     </div>
                 @else
                     @include('partials.no-data')

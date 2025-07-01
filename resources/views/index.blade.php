@@ -56,7 +56,6 @@
                     </div>
 
                     @include('partials.configuration-errors', $configurationErrors)
-
                     <div class="form-actions">
                         <button type="submit" class="btn btn-primary btn-lg">
                             <i class="fas fa-plus-circle"></i> Создать сборку

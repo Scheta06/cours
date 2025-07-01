@@ -134,6 +134,7 @@
                                     'partials.configuration-errors',
                                     $configurationErrors = $value->errors)
                             </div>
+
                         </div>
                     @endforeach
             </div>

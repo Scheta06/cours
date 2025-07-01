@@ -2,6 +2,9 @@
 
 namespace App\Services;
 
+use App\Models\Socket;
+use App\Models\Chipset;
+
 class PcCompatibilityChecker
 {
     public function check(array $components): array
@@ -25,16 +28,20 @@ class PcCompatibilityChecker
 
         $processor = $components['processor'];
         $motherboard = $components['motherboard'];
+        $motherboardChipset = Chipset::find($motherboard->chipset_id);
+        $motherboardSocket = Socket::find($motherboardChipset->socket_id);
         if ($processor &&
                 $motherboard &&
                 $processor->socket->id !== $motherboard->chipset->socket_id) {
             $errors['processor_and_motherboard'] = sprintf(
-                'Процессор %s %s не совместим с материнской платой %s %s %s (разные сокеты)',
+                'Процессор %s %s не совместим с материнской платой %s %s %s (разные сокеты - %s и %s)',
                 $processor->vendor->title,
                 $processor->title,
                 $motherboard->vendor->title,
                 $motherboard->chipset->title,
-                $motherboard->title
+                $motherboard->title,
+                $processor->socket->title,
+                $motherboardSocket->title
             );
         }
     }
@@ -49,7 +56,7 @@ class PcCompatibilityChecker
         $processor = $components['processor'];
         $cooler = $components['cooler'];
 
-        if ($processor && $cooler && $processor->tdp > $cooler->power) {
+        if ($processor && $cooler && $processor->tdp*1.4 > $cooler->power) {
             $errors['processor_and_cooler'] = sprintf(
                 'Процессор %s %s не совместим с кулером %s %s (ТДП: %dW > %dW)',
                 $processor->vendor->title,
@@ -76,7 +83,7 @@ class PcCompatibilityChecker
 
         if (($processor && $videocard && $psu) && (($processor->tdp + $videocard->tdp) * $compabilityPower > $psu->power)) {
             $errors['processor_videocard_and_psu'] = sprintf(
-                'Связка процессора %s %s и видеокарты %s %s не совместима с блоком питания %s %s (ТДП: %dW + %dW > %d)',
+                'Связка процессора %s %s и видеокарты %s %s не совместима с блоком питания %s %s (ТДП: %dW + %dW > %dW)',
                 $processor->vendor->title,
                 $processor->title,
                 $videocard->vendor->title,
@@ -108,8 +115,8 @@ class PcCompatibilityChecker
                 $motherboard->vendor->title,
                 $motherboard->chipset->title,
                 $motherboard->title,
-                $motherboard->memoryType->title,
                 $ram->memoryType->title,
+                $motherboard->memoryType->title,
             );
         }
     }
